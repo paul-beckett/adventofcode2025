@@ -1,0 +1,19 @@
+package {{.Day}}
+
+import "errors"
+
+type {{.DayType}} struct {
+	data []string
+}
+
+func New{{.DayType}}(data []string) *{{.DayType}} {
+	return &{{.DayType}}{data: data}
+}
+
+func (d *{{.DayType}}) Part1() (int,error) {
+	return 0, errors.ErrUnsupported
+}
+
+func (d *{{.DayType}}) Part2() (int,error) {
+	return 0, errors.ErrUnsupported
+}
