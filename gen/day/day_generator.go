@@ -10,6 +10,9 @@ import (
 	"path/filepath"
 	"strings"
 	"text/template"
+
+	"golang.org/x/text/cases"
+	"golang.org/x/text/language"
 )
 
 type data struct {
@@ -63,7 +66,7 @@ func main() {
 	d := &data{
 		Year:    year,
 		Day:     day,
-		DayType: strings.Title(day),
+		DayType: cases.Title(language.English).String(day),
 		Days:    days,
 	}
 

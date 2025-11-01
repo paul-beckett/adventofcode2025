@@ -1,10 +1,10 @@
 package collection
 
 import (
-	"reflect"
-	"slices"
 	"strings"
 	"testing"
+
+	"github.com/stretchr/testify/assert"
 )
 
 func TestSum(t *testing.T) {
@@ -12,25 +12,19 @@ func TestSum(t *testing.T) {
 		numbers := []int{1, 2, 3}
 		got := Sum(numbers)
 		want := 6
-		if got != want {
-			t.Errorf("got %d want %d given, %v", got, want, numbers)
-		}
+		assert.Equal(t, want, got)
 	})
 	t.Run("sum int64", func(t *testing.T) {
 		numbers := []int64{1, 2, 3}
 		got := Sum(numbers)
 		want := int64(6)
-		if got != want {
-			t.Errorf("got %d want %d given, %v", got, want, numbers)
-		}
+		assert.Equal(t, want, got)
 	})
 	t.Run("sum float64", func(t *testing.T) {
 		numbers := []float64{1, 2, 3}
 		got := Sum(numbers)
 		want := 6.0
-		if got != want {
-			t.Errorf("got %f want %f given, %v", got, want, numbers)
-		}
+		assert.Equal(t, want, got)
 	})
 }
 
@@ -39,12 +33,10 @@ func TestSumFunc(t *testing.T) {
 		return len(s)
 	}
 	t.Run("sum string length", func(t *testing.T) {
-		strings := []string{"sum", "of", "string", "lengths"}
-		got := SumFunc(strings, stringLengthFunc)
+		words := []string{"sum", "of", "string", "lengths"}
+		got := SumFunc(words, stringLengthFunc)
 		want := 18
-		if got != want {
-			t.Errorf("got %d want %d given, %v", got, want, strings)
-		}
+		assert.Equal(t, want, got)
 	})
 }
 
@@ -54,9 +46,7 @@ func TestMap(t *testing.T) {
 		words := []string{"abc", "def", "ghi"}
 		got := Map(words, toUpper)
 		want := []string{"ABC", "DEF", "GHI"}
-		if !slices.Equal(got, want) {
-			t.Errorf("got %v want %v given, %v", got, want, words)
-		}
+		assert.Equal(t, want, got)
 	})
 }
 
@@ -66,9 +56,7 @@ func TestReduce(t *testing.T) {
 		words := []string{"abc", "def", "ghi"}
 		got := Reduce(words, join, "_")
 		want := "_,abc,def,ghi"
-		if got != want {
-			t.Errorf("got %s want %s given, %v", got, want, words)
-		}
+		assert.Equal(t, want, got)
 	})
 }
 
@@ -78,9 +66,7 @@ func TestFilter(t *testing.T) {
 		nums := []int{1, 2, 3, 4, 5}
 		got := Filter(nums, isEven)
 		want := []int{2, 4}
-		if !slices.Equal(got, want) {
-			t.Errorf("got %v want %v given, %v", got, want, nums)
-		}
+		assert.Equal(t, want, got)
 	})
 }
 
@@ -88,57 +74,42 @@ func TestAll(t *testing.T) {
 	nums := []int{1, 2, 3, 4, 5}
 	t.Run("all values match predicate", func(t *testing.T) {
 		allLessThan10 := func(num int) bool { return num < 10 }
-		got := All(nums, allLessThan10)
-		want := true
-		if got != want {
-			t.Errorf("got %v want %v given %v", got, want, nums)
-		}
+		assert.True(t, All(nums, allLessThan10))
 	})
 	t.Run("all values do not match predicate", func(t *testing.T) {
 		allLessThan4 := func(num int) bool { return num < 4 }
-		got := All(nums, allLessThan4)
-		want := false
-		if got != want {
-			t.Errorf("got %v want %v given %v", got, want, nums)
-		}
+		assert.False(t, All(nums, allLessThan4))
 	})
 }
 
 func TestChunkBy(t *testing.T) {
-	var testCases = []struct {
-		name string
+	var testCases = map[string]struct {
 		data []string
 		want [][]string
 	}{
-		{
-			name: "split in middle",
+
+		"split in middle": {
 			data: []string{"abc", "def", "", "ghi"},
 			want: [][]string{{"abc", "def"}, {"ghi"}},
 		},
-		{
-			name: "multiple splits",
+		"multiple splits": {
 			data: []string{"abc", "", "def", "", "ghi"},
 			want: [][]string{{"abc"}, {"def"}, {"ghi"}},
 		},
-		{
-			name: "split at start",
+		"split at start": {
 			data: []string{"", "abc", "def", "ghi"},
 			want: [][]string{{"abc", "def", "ghi"}},
 		},
-		{
-			name: "split at end",
+		"split at end": {
 			data: []string{"abc", "def", "ghi", ""},
 			want: [][]string{{"abc", "def", "ghi"}},
 		},
 	}
 	matchWhiteSpace := func(s string) bool { return strings.TrimSpace(s) == "" }
-	for _, testCase := range testCases {
-		t.Run(testCase.name, func(t *testing.T) {
-			got := ChunkBy(testCase.data, matchWhiteSpace)
-
-			if !reflect.DeepEqual(got, testCase.want) {
-				t.Errorf("got %v, want %v", got, testCase.want)
-			}
+	for name, tc := range testCases {
+		t.Run(name, func(t *testing.T) {
+			got := ChunkBy(tc.data, matchWhiteSpace)
+			assert.Equal(t, tc.want, got)
 		})
 	}
 }
