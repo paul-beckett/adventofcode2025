@@ -2,7 +2,7 @@ package aoc{{.Year}}
 
 import (
     {{- range .Days}}
-    "aoc2025/cmd/aoc{{$.Year}}/{{.}}"
+	"aoc2025/cmd/aoc{{$.Year}}/{{.}}"
     {{- end}}
 	"fmt"
 
@@ -11,7 +11,7 @@ import (
 
 var subCommands = []*cobra.Command{
     {{- range .Days}}
-    {{.}}.NewCommand(),
+	{{.}}.NewCommand(),
     {{- end}}
 }
 
