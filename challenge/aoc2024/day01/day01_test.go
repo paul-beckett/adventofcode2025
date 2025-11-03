@@ -1,7 +1,7 @@
-package day00_test
+package day01_test
 
 import (
-	"aoc2025/challenge/aoc2025/day00"
+	"aoc2025/challenge/aoc2024/day01"
 	"strings"
 	"testing"
 
@@ -14,16 +14,20 @@ func TestPart1(t *testing.T) {
 		want int
 	}{
 		"example1": {
-			data: `1
-2`,
-			want: 1,
+			data: `3   4
+4   3
+2   5
+1   3
+3   9
+3   3`,
+			want: 11,
 		},
 	}
 
 	for name, tc := range testCases {
 		t.Run(name, func(t *testing.T) {
 			//given
-			day := day00.NewDay00(strings.Split(tc.data, "\n"))
+			day := day01.NewDay01(strings.Split(tc.data, "\n"))
 
 			//when
 			got, err := day.Part1()
@@ -41,16 +45,20 @@ func TestPart2(t *testing.T) {
 		want int
 	}{
 		"example1": {
-			data: `1
-2`,
-			want: 2,
+			data: `3   4
+4   3
+2   5
+1   3
+3   9
+3   3`,
+			want: 31,
 		},
 	}
 
 	for name, tc := range testCases {
 		t.Run(name, func(t *testing.T) {
 			//given
-			day := day00.NewDay00(strings.Split(tc.data, "\n"))
+			day := day01.NewDay01(strings.Split(tc.data, "\n"))
 
 			//when
 			got, err := day.Part2()

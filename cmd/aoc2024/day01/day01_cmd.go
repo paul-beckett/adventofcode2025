@@ -1,7 +1,7 @@
-package day00
+package day01
 
 import (
-	"aoc2025/challenge/aoc2025/day00"
+	"aoc2025/challenge/aoc2024/day01"
 	"aoc2025/internal/file"
 	"aoc2025/internal/metrics"
 
@@ -10,9 +10,9 @@ import (
 
 func NewCommand() *cobra.Command {
 	return &cobra.Command{
-		Use: "day00",
+		Use: "day01",
 		Run: func(cmd *cobra.Command, args []string) {
-			day := day00.NewDay00(file.ReadFile("./input/aoc2025/day00.txt"))
+			day := day01.NewDay01(file.ReadFile("./input/aoc2024/day01.txt"))
 			metrics.PrintResultAndTime("part1", day.Part1)
 			metrics.PrintResultAndTime("part2", day.Part2)
 		},
