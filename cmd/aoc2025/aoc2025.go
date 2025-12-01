@@ -1,12 +1,15 @@
 package aoc2025
 
 import (
+	"aoc2025/cmd/aoc2025/day01"
 	"fmt"
 
 	"github.com/spf13/cobra"
 )
 
-var subCommands = []*cobra.Command{}
+var subCommands = []*cobra.Command{
+	day01.NewCommand(),
+}
 
 func NewCommand() *cobra.Command {
 	year := &cobra.Command{
