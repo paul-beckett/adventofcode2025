@@ -14,10 +14,11 @@ func NewDay03(data []string) *Day03 {
 }
 
 func (d *Day03) Part1() (int, error) {
+
 	sum := 0
 	for _, line := range d.data {
 		nums := toDigits(line)
-		sum += joltage(nums, 2)
+		sum += findJoltage(nums, 2)
 	}
 	return sum, nil
 }
@@ -26,29 +27,31 @@ func (d *Day03) Part2() (int, error) {
 	sum := 0
 	for _, line := range d.data {
 		nums := toDigits(line)
-		sum += joltage(nums, 12)
+		sum += findJoltage(nums, 12)
 	}
 	return sum, nil
 }
 
-func joltage(nums []int, size int) int {
-	j := 0
-	start := 0
-	for size > 0 {
+func findJoltage(nums []int, size int) int {
+	joltage := 0
+
+	l := 0
+	r := len(nums) - size + 1
+	for r <= len(nums) {
 		digit := -1
 		digitI := -1
-		for i := start; i <= len(nums)-size; i++ {
+		for i := l; i < r; i++ {
 			if nums[i] > digit {
 				digit = nums[i]
 				digitI = i
 			}
 		}
-		start = digitI + 1
-		j *= 10
-		j += digit
-		size--
+		l = digitI + 1
+		joltage *= 10
+		joltage += digit
+		r++
 	}
-	return j
+	return joltage
 }
 
 func toDigits(s string) []int {
