@@ -1,9 +1,6 @@
 package day03
 
 import (
-	"errors"
-	"fmt"
-	"slices"
 	"strconv"
 	"strings"
 )
@@ -19,38 +16,42 @@ func NewDay03(data []string) *Day03 {
 func (d *Day03) Part1() (int, error) {
 	sum := 0
 	for _, line := range d.data {
-		nums := toInts(line)
-		sum += joltage(nums)
+		nums := toDigits(line)
+		sum += joltage(nums, 2)
 	}
 	return sum, nil
 }
 
 func (d *Day03) Part2() (int, error) {
-	return 0, errors.ErrUnsupported
+	sum := 0
+	for _, line := range d.data {
+		nums := toDigits(line)
+		sum += joltage(nums, 12)
+	}
+	return sum, nil
 }
 
-func joltage(nums []int) int {
-	maxL := slices.Clone(nums)
-	for i := 1; i < len(nums); i++ {
-		maxL[i] = max(maxL[i], max(maxL[i-1]))
+func joltage(nums []int, size int) int {
+	j := 0
+	start := 0
+	for size > 0 {
+		digit := -1
+		digitI := -1
+		for i := start; i <= len(nums)-size; i++ {
+			if nums[i] > digit {
+				digit = nums[i]
+				digitI = i
+			}
+		}
+		start = digitI + 1
+		j *= 10
+		j += digit
+		size--
 	}
-
-	maxR := slices.Clone(nums)
-	for i := len(nums) - 2; i >= 0; i-- {
-		maxR[i] = max(maxR[i], max(maxR[i+1]))
-	}
-	fmt.Println("maxL:", maxL)
-	fmt.Println("maxR:", maxR)
-
-	best := 0
-	for i := 0; i < len(nums)-1; i++ {
-		best = max(best, maxL[i]*10+maxR[i+1])
-	}
-	fmt.Println("best:", best)
-	return best
+	return j
 }
 
-func toInts(s string) []int {
+func toDigits(s string) []int {
 	var nums []int
 	for _, c := range strings.Split(s, "") {
 		num, _ := strconv.Atoi(c)
