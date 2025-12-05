@@ -23,20 +23,10 @@ var byMin = func(a, b idRange) int {
 }
 
 func (d *Day05) Part1() (int, error) {
-
-	var idRanges []idRange
-	var i int
-	for i = 0; i < len(d.data); i++ {
-		line := d.data[i]
-		if len(line) == 0 {
-			break
-		}
-		fields := strings.Split(line, "-")
-		idRanges = append(idRanges, idRange{min: mustParseInt(fields[0]), max: mustParseInt(fields[1])})
-	}
+	idRanges := d.parseRanges()
 	fresh := 0
-	for i = i + 1; i < len(d.data); i++ {
-		id := mustParseInt(d.data[i])
+	for _, line := range d.data[len(idRanges)+1:] {
+		id := mustParseInt(line)
 		for _, r := range idRanges {
 			if id >= r.min && id <= r.max {
 				fresh++
@@ -47,6 +37,17 @@ func (d *Day05) Part1() (int, error) {
 	return fresh, nil
 }
 
+func (d *Day05) Part2() (int, error) {
+	idRanges := d.parseRanges()
+	slices.SortFunc(idRanges, byMin)
+
+	total := 0
+	for _, m := range mergeRanges(idRanges) {
+		total += m.max - m.min + 1
+	}
+	return total, nil
+}
+
 func mustParseInt(s string) int {
 	i, err := strconv.Atoi(s)
 	if err != nil {
@@ -55,29 +56,10 @@ func mustParseInt(s string) int {
 	return i
 }
 
-func (d *Day05) Part2() (int, error) {
-	var idRanges []idRange
-	for _, line := range d.data {
-		if len(line) == 0 {
-			break
-		}
-		fields := strings.Split(line, "-")
-		idRanges = append(idRanges, idRange{min: mustParseInt(fields[0]), max: mustParseInt(fields[1])})
-	}
-	slices.SortFunc(idRanges, byMin)
-
-	total := 0
-	for _, m := range merge(idRanges) {
-		total += m.max - m.min + 1
-	}
-	return total, nil
-}
-
-func merge(ranges []idRange) []idRange {
+func mergeRanges(ranges []idRange) []idRange {
 	merged := []idRange{ranges[0]}
 
 	for _, r := range ranges {
-		slices.SortFunc(merged, byMin)
 		last := len(merged) - 1
 		if r.min <= merged[last].max {
 			merged[last].max = max(r.max, merged[last].max)
@@ -86,4 +68,16 @@ func merge(ranges []idRange) []idRange {
 		}
 	}
 	return merged
+}
+
+func (d *Day05) parseRanges() []idRange {
+	var idRanges []idRange
+	for _, line := range d.data {
+		if len(line) == 0 {
+			break
+		}
+		fields := strings.Split(line, "-")
+		idRanges = append(idRanges, idRange{min: mustParseInt(fields[0]), max: mustParseInt(fields[1])})
+	}
+	return idRanges
 }
