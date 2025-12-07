@@ -18,38 +18,27 @@ const (
 )
 
 func (d *Day07) Part1() (int, error) {
-
-	start := strings.Index(d.data[0], string(startChar))
-
-	current := map[int]bool{start: true}
-	splits := 0
-	for _, line := range d.data[1:] {
-		next := make(map[int]bool)
-		for i := range current {
-			if line[i] == splitChar {
-				next[i-1] = true
-				next[i+1] = true
-				splits++
-			} else {
-				next[i] = true
-			}
-		}
-		current = next
-	}
-
+	splits, _ := d.tachyons()
 	return splits, nil
 }
 
 func (d *Day07) Part2() (int, error) {
-	start := strings.Index(d.data[0], string(startChar))
+	_, timelines := d.tachyons()
+	return timelines, nil
+}
 
+// tachyons returns the number of splits and the total timelines
+func (d *Day07) tachyons() (int, int) {
+	start := strings.Index(d.data[0], string(startChar))
 	current := map[int]int{start: 1}
+	splits := 0
 	for _, line := range d.data[1:] {
 		next := make(map[int]int)
 		for i, n := range current {
 			if line[i] == splitChar {
 				next[i-1] += n
 				next[i+1] += n
+				splits++
 			} else {
 				next[i] += n
 			}
@@ -61,6 +50,5 @@ func (d *Day07) Part2() (int, error) {
 	for _, n := range current {
 		timelines += n
 	}
-
-	return timelines, nil
+	return splits, timelines
 }
