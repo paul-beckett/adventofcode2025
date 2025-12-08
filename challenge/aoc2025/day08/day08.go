@@ -35,10 +35,15 @@ func (d *Day08) Part1() (int, error) {
 
 type pointPair struct {
 	start, end math.Vector3
+	dst        int
 }
 
-func (p *pointPair) Dst() int {
-	return p.start.DstSquared(p.end)
+func newPointPair(start, end math.Vector3) *pointPair {
+	return &pointPair{
+		start: start,
+		end:   end,
+		dst:   start.DstSquared(end),
+	}
 }
 
 func (d *Day08) Part1WithLimit(limit int) (int, error) {
@@ -47,11 +52,11 @@ func (d *Day08) Part1WithLimit(limit int) (int, error) {
 	var pairs []pointPair
 	for i, start := range d.points[:len(d.points)-1] {
 		for _, end := range d.points[i+1:] {
-			pairs = append(pairs, pointPair{start: start, end: end})
+			pairs = append(pairs, *newPointPair(start, end))
 		}
 	}
 	slices.SortFunc(pairs, func(a, b pointPair) int {
-		return a.Dst() - b.Dst()
+		return a.dst - b.dst
 	})
 
 	for _, pair := range pairs[:limit] {
@@ -98,11 +103,11 @@ func (d *Day08) Part2() (int, error) {
 	var pairs []pointPair
 	for i, start := range d.points[:len(d.points)-1] {
 		for _, end := range d.points[i+1:] {
-			pairs = append(pairs, pointPair{start: start, end: end})
+			pairs = append(pairs, *newPointPair(start, end))
 		}
 	}
 	slices.SortFunc(pairs, func(a, b pointPair) int {
-		return a.Dst() - b.Dst()
+		return a.dst - b.dst
 	})
 
 	for _, pair := range pairs {
