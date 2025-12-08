@@ -5,5 +5,5 @@ type Vector2 struct {
 }
 
 func (v Vector2) Add(other Vector2) Vector2 {
-	return Vector2{v.X + other.X, v.Y + other.Y}
+	return Vector2{X: v.X + other.X, Y: v.Y + other.Y}
 }
