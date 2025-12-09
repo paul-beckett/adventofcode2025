@@ -3,9 +3,26 @@ package day09
 import (
 	"aoc2025/internal/math"
 	"aoc2025/internal/must"
-	"errors"
+	"fmt"
+	"slices"
 	"strings"
 )
+
+type pointPair struct {
+	start, end math.Vector2
+	area       int
+}
+
+func newPointPair(start, end math.Vector2) *pointPair {
+	dx := abs(start.X-end.X) + 1
+	dy := abs(start.Y-end.Y) + 1
+
+	return &pointPair{
+		start: start,
+		end:   end,
+		area:  dx * dy,
+	}
+}
 
 type Day09 struct {
 	points []math.Vector2
@@ -48,5 +65,60 @@ func (d *Day09) Part1() (int, error) {
 }
 
 func (d *Day09) Part2() (int, error) {
-	return 0, errors.ErrUnsupported
+	var lines []pointPair
+	for i, point := range d.points {
+		var line pointPair
+		if i < len(d.points)-1 {
+			line = *newPointPair(point, d.points[i+1])
+		} else {
+			line = *newPointPair(point, d.points[0])
+		}
+		lines = append(lines, line)
+	}
+
+	var pairs []pointPair
+	for i, start := range d.points[:len(d.points)-1] {
+		for _, end := range d.points[i+1:] {
+			pairs = append(pairs, *newPointPair(start, end))
+		}
+	}
+	slices.SortFunc(pairs, func(a, b pointPair) int {
+		return b.area - a.area
+	})
+
+	for _, pair := range pairs {
+		crosses := false
+		for _, line := range lines {
+			if intersects(pair, line) {
+				crosses = true
+				break
+			}
+		}
+		if !crosses {
+			return pair.area, nil
+		}
+	}
+
+	return -1, fmt.Errorf("not found")
+}
+
+func intersects(rect pointPair, line pointPair) bool {
+	if rect.start == line.start || rect.start == line.end || rect.end == line.start || rect.end == line.end {
+		return false
+	}
+	minX := min(rect.start.X, rect.end.X)
+	maxX := max(rect.start.X, rect.end.X)
+	minY := min(rect.start.Y, rect.end.Y)
+	maxY := max(rect.start.Y, rect.end.Y)
+
+	lineMinX := min(line.start.X, line.end.X)
+	lineMaxX := max(line.start.X, line.end.X)
+	lineMinY := min(line.start.Y, line.end.Y)
+	lineMaxY := max(line.start.Y, line.end.Y)
+
+	if lineMinX >= maxX || lineMaxX <= minX || lineMinY >= maxY || lineMaxY <= minY {
+		return false
+	}
+
+	return true
 }

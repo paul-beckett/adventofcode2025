@@ -47,8 +47,15 @@ func TestPart2(t *testing.T) {
 		want int
 	}{
 		"example1": {
-			data: ``,
-			want: -1,
+			data: `7,1
+11,1
+11,7
+9,7
+9,5
+2,5
+2,3
+7,3`,
+			want: 24,
 		},
 	}
 
