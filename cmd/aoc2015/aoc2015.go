@@ -2,6 +2,8 @@ package aoc2015
 
 import (
 	"aoc2025/cmd/aoc2015/day01"
+	"aoc2025/cmd/aoc2015/day02"
+	"aoc2025/cmd/aoc2015/day03"
 	"fmt"
 
 	"github.com/spf13/cobra"
@@ -9,6 +11,8 @@ import (
 
 var subCommands = []*cobra.Command{
 	day01.NewCommand(),
+	day02.NewCommand(),
+	day03.NewCommand(),
 }
 
 func NewCommand() *cobra.Command {
