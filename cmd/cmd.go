@@ -1,6 +1,7 @@
 package cmd
 
 import (
+	"aoc2025/cmd/aoc2015"
 	"aoc2025/cmd/aoc2024"
 	"aoc2025/cmd/aoc2025"
 	"fmt"
@@ -11,6 +12,7 @@ import (
 var subCommands = []*cobra.Command{
 	aoc2025.NewCommand(),
 	aoc2024.NewCommand(),
+	aoc2015.NewCommand(),
 }
 
 func NewRootCommand() *cobra.Command {
