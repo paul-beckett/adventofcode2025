@@ -3,7 +3,8 @@ package day08
 import (
 	"aoc2025/internal/math"
 	"aoc2025/internal/must"
-	"errors"
+	"fmt"
+	"maps"
 	"slices"
 	"strings"
 )
@@ -95,9 +96,9 @@ func (d *Day08) Part1WithLimit(limit int) (int, error) {
 }
 
 func (d *Day08) Part2() (int, error) {
-	remaining := make(map[math.Vector3]bool)
+	var circuits []map[math.Vector3]bool
 	for _, point := range d.points {
-		remaining[point] = true
+		circuits = append(circuits, map[math.Vector3]bool{point: true})
 	}
 
 	var pairs []pointPair
@@ -111,12 +112,21 @@ func (d *Day08) Part2() (int, error) {
 	})
 
 	for _, pair := range pairs {
-		delete(remaining, pair.start)
-		delete(remaining, pair.end)
-		if len(remaining) == 0 {
+		i := slices.IndexFunc(circuits, func(m map[math.Vector3]bool) bool {
+			return m[pair.start]
+		})
+		j := slices.IndexFunc(circuits, func(m map[math.Vector3]bool) bool {
+			return m[pair.end]
+		})
+		if i == j {
+			continue
+		}
+		maps.Copy(circuits[i], circuits[j])
+		circuits = slices.Delete(circuits, j, j+1)
+		if len(circuits) == 1 {
 			return pair.start.X * pair.end.X, nil
 		}
 	}
 
-	return 0, errors.ErrUnsupported
+	return 0, fmt.Errorf("no solution found")
 }
