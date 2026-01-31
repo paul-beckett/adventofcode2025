@@ -97,6 +97,9 @@ func minMoves(m machine) (int, error) {
 	return -1, fmt.Errorf("no moves found")
 }
 
+// Part2 solved with:
+// https://www.reddit.com/r/adventofcode/comments/1pk87hl/2025_day_10_part_2_bifurcate_your_way_to_victory/
+// https://topaz.github.io/paste/#XQAAAQDrBgAAAAAAAAAzHIoib6poHLpewxtGE3pTrRdzrponKxDhfDpmpp1XOH9xnlIyXvIsci+yi/TTFy44FGq6ZrL5OGunysUd322wy+hc3ZIsGd8pNfizbHiJBJTwZuKTJfFD2uUHnzBwP+u/d/PLktBiYiqXhh1rLe8pUTd4hRgQ7Y7ZnPiYgWE25rG2G/K82KYb/v3eDZYBSqI6WDTw/KZ12Dc6FqQLlurOLmsFXKRqb7yL8I8sTp9GTt2rfbMrhrR7UlhjBxofh5Ckk4hXPfRc/R87qV/BXrRJFgFbvPjBlT03fVct8umxOsqUTZ0nT7hYZl0wGUxgeOty+QYL51kUz7Jh0+LwJz28zABJLSt4UoP/08Oei2An6Y1i7Z/d7tmq1TE/qp3ZUSUTcjpJHmwOb9bGYuS9ryexTqHm6rXlEzZyiR8LjrqEDglnSy+YbNGxN2bbfvYPPco3xwCryYbgxUQ+LP53awgvEkk+We0/iyJCHhS7k3s9KLf9SkeB7/aXFoRQoHzrlkzme18oufdVmq+7hJe2xK2Z0Vyj11XfERvYggQXUIuwEbMKJWgp6jVgaoc9yXLHeaz1O+E8ECvRY5GerpLRyK0ywx4j0ItPHMWvkcySQyfoJjD+oHHVSzsrkggtm2szpnyD4QPzu0Cj4IzdkzkjA+9RYKpumjThjZIRU1tpoNVq/llLE+51NJkIUr7SRiLP5okgfiUXiJs6bd3lPfR/pwaO3iqTyVcHL/4/tOLI2Cz5lU0anKFSl9Mm6AEUTRIMfFmtD+JMwOFK226DXSLfjaopjJfI1sg4TmSJ7AjgQQOjCDKSVIvILlpaYliEsTDEg/q9vvOfpLfkVFP2WI0dt2raqrR9h44Q3NaKwKnFNmLV1yIunwwvEecBn5wyaG8Zr5JlF38jcGtGWBHYWVvmf23ByFxPZTgUDC8a1Fa967eX9K3+hB7gR8LgjOyS+DkfbLSCAqqPckeyD9PFfVH9KNAvQtTjZ/kmits4YjOhdIX/6G3UXw==
 func (d *Day10) Part2() (int, error) {
 	return 0, errors.ErrUnsupported
 }
