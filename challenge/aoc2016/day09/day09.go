@@ -2,7 +2,6 @@ package day09
 
 import (
 	"aoc2025/internal/must"
-	"errors"
 	"strings"
 )
 
@@ -14,13 +13,13 @@ func NewDay09(data []string) *Day09 {
 	return &Day09{data: data}
 }
 
-func decompress(s string) string {
-	var d []string
+func decompress(s string, recurse bool) int {
+	count := 0
 	start := 0
 	i := 0
 	for i < len(s) {
 		if s[i] == '(' {
-			d = append(d, s[start:i])
+			count += i - start
 			j := i
 			for j < len(s) {
 				if s[j] == ')' {
@@ -31,7 +30,11 @@ func decompress(s string) string {
 			nums := strings.Split(s[i+1:j], "x")
 			chars := must.ParseInt(nums[0])
 			repeat := must.ParseInt(nums[1])
-			d = append(d, strings.Repeat(s[j+1:j+1+chars], repeat))
+			if recurse {
+				count += decompress(s[j+1:j+1+chars], true) * repeat
+			} else {
+				count += repeat * chars
+			}
 			i = j + 1 + chars
 			start = i
 		} else {
@@ -39,16 +42,17 @@ func decompress(s string) string {
 		}
 	}
 	if start < len(s) {
-		d = append(d, s[start:])
+		count += len(s) - start
 	}
-	return strings.Join(d, "")
+	return count
 }
 
 func (d *Day09) Part1() (int, error) {
-	s := decompress(d.data[0])
-	return len(s), nil
+	s := decompress(d.data[0], false)
+	return s, nil
 }
 
 func (d *Day09) Part2() (int, error) {
-	return 0, errors.ErrUnsupported
+	s := decompress(d.data[0], true)
+	return s, nil
 }
