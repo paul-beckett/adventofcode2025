@@ -48,8 +48,16 @@ func TestPart2(t *testing.T) {
 		want int
 	}{
 		"example1": {
-			data: ``,
-			want: -1,
+			data: `ihgpwlah`,
+			want: 370,
+		},
+		"example2": {
+			data: `kglvqrro`,
+			want: 492,
+		},
+		"example3": {
+			data: `ulqzkmiv`,
+			want: 830,
 		},
 	}
 

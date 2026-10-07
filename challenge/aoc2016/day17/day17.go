@@ -3,7 +3,6 @@ package day17
 import (
 	"aoc2025/internal/math"
 	"crypto/md5"
-	"errors"
 	"fmt"
 	"io"
 )
@@ -17,7 +16,11 @@ func NewDay17(data []string) *Day17 {
 }
 
 func (d *Day17) Part1() (string, error) {
-	return findPath(d.passcode)
+	paths := findPaths(d.passcode)
+	if len(paths) == 0 {
+		return "", fmt.Errorf("not found")
+	}
+	return paths[0], nil
 }
 
 type key struct {
@@ -30,19 +33,22 @@ var (
 	path       = []string{"U", "D", "L", "R"}
 )
 
-func findPath(passcode string) (string, error) {
+func findPaths(passcode string) []string {
 	start := math.Vector2{X: 0, Y: 0}
 	target := math.Vector2{X: 3, Y: 3}
 
 	var queue []key
 	queue = append(queue, key{pos: start, path: ""})
 
+	var paths []string
+
 	h := md5.New()
 	for len(queue) > 0 {
 		var nextLevel []key
 		for _, p := range queue {
 			if p.pos == target {
-				return p.path, nil
+				paths = append(paths, p.path)
+				continue
 			}
 			h.Reset()
 			io.WriteString(h, passcode+p.path)
@@ -60,9 +66,13 @@ func findPath(passcode string) (string, error) {
 		}
 		queue = nextLevel
 	}
-	return "", fmt.Errorf("not found")
+	return paths
 }
 
 func (d *Day17) Part2() (int, error) {
-	return 0, errors.ErrUnsupported
+	paths := findPaths(d.passcode)
+	if len(paths) == 0 {
+		return 0, fmt.Errorf("not found")
+	}
+	return len(paths[len(paths)-1]), nil
 }
