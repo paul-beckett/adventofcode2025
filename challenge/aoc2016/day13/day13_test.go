@@ -36,27 +36,5 @@ func TestPart1(t *testing.T) {
 }
 
 func TestPart2(t *testing.T) {
-	var testCases = map[string]struct {
-		data string
-		want int
-	}{
-		"example1": {
-			data: ``,
-			want: -1,
-		},
-	}
-
-	for name, tc := range testCases {
-		t.Run(name, func(t *testing.T) {
-			//given
-			day := day13.NewDay13(strings.Split(tc.data, "\n"))
-
-			//when
-			got, err := day.Part2()
-
-			//then
-			assert.NoError(t, err)
-			assert.Equal(t, tc.want, got)
-		})
-	}
+	t.Skip("no example")
 }
