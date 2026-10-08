@@ -14,6 +14,7 @@ import (
 	"aoc2025/cmd/aoc2016/day12"
 	"aoc2025/cmd/aoc2016/day13"
 	"aoc2025/cmd/aoc2016/day17"
+	"aoc2025/cmd/aoc2016/day18"
 	"fmt"
 
 	"github.com/spf13/cobra"
@@ -33,6 +34,7 @@ var subCommands = []*cobra.Command{
 	day12.NewCommand(),
 	day13.NewCommand(),
 	day17.NewCommand(),
+	day18.NewCommand(),
 }
 
 func NewCommand() *cobra.Command {
